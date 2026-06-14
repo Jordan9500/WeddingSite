@@ -8,19 +8,21 @@ export const couple = {
 // ISO date string used for the countdown and display. Include the time of the ceremony.
 export const weddingDateISO = '2026-10-10T16:00:00'
 
+const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`
+
 // TODO: Replace photo and text with your real story + a favorite photo of the two of you.
 export const story = {
-  photo: '/images/hero.jpg',
+  photo: assetUrl('images/hero.jpg'),
   heading: 'Our Story',
   text: "We can't wait to share this day with the people who mean the most to us. Scroll down to see how it all came together, where we're celebrating, and how to find us on the day.",
 }
 
 // TODO: Replace with real photos of you two. Add/remove entries as needed.
 export const gallery = [
-  { src: '/images/gallery-1.jpg', caption: 'Add a photo' },
-  { src: '/images/gallery-2.jpg', caption: 'Add a photo' },
-  { src: '/images/gallery-3.jpg', caption: 'Add a photo' },
-  { src: '/images/gallery-4.jpg', caption: 'Add a photo' },
+  { src: assetUrl('images/gallery-1.jpg'), caption: 'Add a photo' },
+  { src: assetUrl('images/gallery-2.jpg'), caption: 'Add a photo' },
+  { src: assetUrl('images/gallery-3.jpg'), caption: 'Add a photo' },
+  { src: assetUrl('images/gallery-4.jpg'), caption: 'Add a photo' },
 ]
 
 export const venue = {
@@ -44,13 +46,13 @@ export const travel = {
       name: 'Springfield Grand Hotel',
       description: 'Block of rooms reserved under "Smith Wedding" - mention the code when booking.',
       link: 'https://example.com/springfield-grand-hotel',
-      photo: '/images/hotel-1.jpg',
+      photo: assetUrl('images/hotel-1.jpg'),
     },
     {
       name: 'Cozy Inn & Suites',
       description: 'Budget-friendly option about 10 minutes from the venue.',
       link: 'https://example.com/cozy-inn-suites',
-      photo: '/images/hotel-2.jpg',
+      photo: assetUrl('images/hotel-2.jpg'),
     },
   ],
   gettingThere: [

@@ -107,6 +107,7 @@ To address "looks blocky/boring" feedback, a CSS-only modernization pass was app
 - `npm run build` runs `vite build` then `scripts/copy-spa-fallback.mjs`, which copies `dist/index.html` to `dist/404.html` — this is the standard GH Pages SPA fallback so deep links (`/our-story`, `/details`, `/rsvp`) and refreshes work.
 - `.github/workflows/deploy.yml` builds on push to `main` and deploys `dist/` via `actions/deploy-pages`. **GitHub Pages must be enabled with source "GitHub Actions"** in the repo settings (Settings → Pages → Build and deployment → Source) for this to take effect — not done from here, do it via the GitHub UI.
 - If the repo is ever renamed or moved to a different path (e.g. a custom domain or user/org page `username.github.io`), update `base` in `vite.config.js`, the manifest `start_url`/`scope`, and the basename — they all need to match.
+- All image paths in `src/data/weddingData.js` (`story.photo`, `gallery[].src`, `travel.accommodations[].photo`) must go through the local `assetUrl()` helper (`` `${import.meta.env.BASE_URL}${path}` ``), not hardcoded `/images/...` strings — otherwise images 404 under the `/WeddingSite/` subpath in production (they worked in dev because `BASE_URL` is `/` there). Any new image references added to this file should use `assetUrl('images/whatever.jpg')`.
 
 ## Not yet done / possible next steps
 
