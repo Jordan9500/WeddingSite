@@ -6,29 +6,31 @@ export default function EventDetails() {
     <section className="page details">
       <h1>Event Details</h1>
 
-      <Reveal className="card">
-        <h2>Venue</h2>
-        <p className="venue-name">{venue.name}</p>
-        <p className="venue-address">{venue.address}</p>
-        <a className="button" href={venue.mapUrl} target="_blank" rel="noreferrer">
-          View on Map
-        </a>
-      </Reveal>
+      <div className="details-grid">
+        <Reveal className="card">
+          <h2>Venue</h2>
+          <p className="venue-name">{venue.name}</p>
+          <p className="venue-address">{venue.address}</p>
+          <a className="button" href={venue.mapUrl} target="_blank" rel="noreferrer">
+            View on Map
+          </a>
+        </Reveal>
 
-      <Reveal className="card" delay={80}>
-        <h2>Schedule</h2>
-        <ul className="schedule-list">
-          {schedule.map((item) => (
-            <li className="schedule-item" key={item.title}>
-              <span className="schedule-time">{item.time}</span>
-              <div>
-                <p className="schedule-title">{item.title}</p>
-                <p className="schedule-description">{item.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Reveal>
+        <Reveal className="card" delay={80}>
+          <h2>Schedule</h2>
+          <ul className="schedule-list">
+            {schedule.map((item) => (
+              <li className="schedule-item" key={item.title}>
+                <span className="schedule-time">{item.time}</span>
+                <div>
+                  <p className="schedule-title">{item.title}</p>
+                  <p className="schedule-description">{item.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
 
       <Reveal className="card" delay={160}>
         <h2>Travel &amp; Accommodations</h2>

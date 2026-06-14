@@ -1,5 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 import Home from './pages/Home'
 import OurStory from './pages/OurStory'
 import EventDetails from './pages/EventDetails'
@@ -19,6 +20,7 @@ function App() {
           <Route path="/rsvp" element={<RSVP />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   )
 }

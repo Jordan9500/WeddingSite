@@ -24,7 +24,8 @@ Initial build is complete and verified (`npm run build` succeeds, all routes ren
 src/
   data/weddingData.js   <- ALL editable wedding content lives here (see below)
   components/
-    Navbar.jsx           nav bar (Home / Our Story / Event Details / RSVP)
+    Navbar.jsx           site header (brand + Home / Our Story / Event Details / RSVP)
+    Footer.jsx           site footer (couple/date/venue + nav links)
     Countdown.jsx        live countdown to weddingDateISO
     Reveal.jsx           scroll-reveal wrapper (IntersectionObserver + CSS animation)
   pages/
@@ -60,17 +61,22 @@ Photos referenced from `weddingData.js` (`story.photo`, `gallery[].src`, `travel
 
 ## Theme
 
-Rustic dark sage green palette, defined as CSS variables in `src/index.css` `:root`:
-- `--text` Dark Espresso `#2f2b28` — body text
-- `--text-muted` Warm Taupe `#8a7968` — secondary text, muted labels
-- `--bg` Oatmeal `#f7f4ee` — page background
-- `--surface` `#ffffff` — cards, navbar
-- `--border` `#e3dcd3`
-- `--accent` Dark Sage Green `#3b5339` — headers, nav active state, primary buttons, links, countdown values
-- `--accent-light` light sage tint `#e4eae2` — hover states, success message bg
-- `--highlight` Ochre Gold `#c6a052` — CTA accent, used on the RSVP submit button
+**Light olive/sage green** palette — went through several iterations (light oatmeal → dark green → desaturated dark green → this) after feedback that dark versions were "too dark"/"garish"; this one uses a user-supplied swatch set (light yellow-greens through near-black olive, plus a gray scale) for an accessible light theme with strong dark-green-on-light-bg contrast. Defined as CSS variables in `src/index.css` `:root`:
+- `--text` `#181b0d` — near-black olive, body text/headings (high contrast on light bg)
+- `--text-muted` `#585956` — mid gray, secondary text/labels
+- `--bg` `#eff1ec` — very light sage-gray, page background (with a subtle light-green gradient + dot texture, see below)
+- `--surface` `#ffffff` — white, cards/navbar/RSVP form
+- `--border` `#c7c9c3` — light gray border, card/input definition
+- `--accent` `#535d38` — dark olive green, links, headings accent, nav active bg, countdown values, primary button gradient (paired with `--on-accent` text)
+- `--accent-light` `#d6e5ab` — light green, hover backgrounds, countdown gradient, RSVP success bg
+- `--highlight` `#9eb168` — mid sage-yellow-green, RSVP CTA button gradient (paired with `--on-highlight` text)
+- `--on-accent` `#f5f7f0` — light text used on top of dark `--accent` surfaces (primary button, active nav link)
+- `--on-highlight` `#181b0d` — dark text used on top of light `--highlight` surfaces (RSVP CTA button)
+- `--focus-ring` `rgba(83, 93, 56, 0.25)` — input focus glow
 
-PWA theme colors (`vite.config.js` manifest, `index.html` meta theme-color) and the generated placeholder icons match `--accent` (`#3b5339`) / `--bg` (`#f7f4ee`).
+`body`'s background is a subtle light gradient (`linear-gradient(160deg, #f6f8f1 0%, #eff1ec 50%, #dde6c9 100%)`, near-white to pale green) layered under a faint dark-olive dot texture (`rgba(83, 93, 56, 0.05)`).
+
+PWA theme colors: `vite.config.js` manifest `theme_color` = `--accent` (`#535d38`), `background_color` = `--bg` (`#eff1ec`); `index.html` meta theme-color = `#535d38`. The existing placeholder PWA icons (dark sage `#3b5339` bg + white "&") still read fine against this palette; not regenerated.
 
 ### Modern visual refresh
 
@@ -92,11 +98,22 @@ To address "looks blocky/boring" feedback, a CSS-only modernization pass was app
 - Hover micro-interactions: cards, buttons, nav links, countdown units, and gallery items all lift/scale slightly with shadow on hover.
 - `prefers-reduced-motion: reduce` disables page/reveal animations.
 
+## Layout: "website" not "app" (latest pass)
+
+After the modern visual refresh, feedback was that the site felt like a PWA/app shell rather than a normal website (full-screen hero + floating glass pill nav, narrow single-column layout capped at 640px everywhere, no footer/typical site structure). This was addressed without removing PWA/offline support (`vite-plugin-pwa` stays as-is):
+
+- **Navbar** (`Navbar.jsx` + `.navbar`/`.navbar-inner`/`.navbar-brand`/`.nav-links`): rebuilt as a traditional site header — solid white `--surface` bar with a bottom border (no glass blur/pill), a site "brand" (first names + `&`) on the left linking home, and nav links on the right with an underline for the active/hover state (`.nav-link.active` uses `border-bottom-color: var(--accent)` instead of a filled pill).
+- **Mobile nav**: below `768px`, `.nav-links` is replaced by a hamburger toggle (`.navbar-toggle`, animates to an X via `aria-expanded`) that opens a full-width dropdown panel (`.nav-links.open`) below the header; `Navbar.jsx` tracks open/closed state with `useState` and closes the menu automatically on route change via `useLocation`. At `min-width: 768px` the toggle is hidden and `.nav-links` becomes a normal inline row.
+- **Content width**: `.main` is now `max-width: 720px` by default, widening to `max-width: 1080px` (with more padding) at `min-width: 1024px`, instead of being capped at 640px on all screen sizes. `.navbar-inner` and `.footer-inner` match the 1080px max-width so the header/footer align with page content on desktop.
+- **Hero** (`.hero-section`): still a full-bleed breakout (`100vw` via `left: 50%; margin-left: -50vw`) with the photo background, gradient overlay, and overlaid couple names/date/countdown — but reduced from `100svh` to `70vh` (mobile) / `78vh` (≥1024px) so it reads as a large banner rather than a full-screen app splash screen, and page content is visible/peeking below the fold.
+- **Footer** (`Footer.jsx` + `.site-footer`/`.footer-inner`/`.footer-links`): new — couple names, wedding date + venue, and nav links, added to `App.jsx` below `<main>`. `.app` is a flex column so the footer sits at the bottom of short pages.
+- **Event Details** (`EventDetails.jsx`): Venue and Schedule cards are wrapped in a `.details-grid` div, which becomes a 2-column CSS grid (`1fr 1.4fr`) at `min-width: 1024px`; Travel & Accommodations stays full-width below.
+- **Gallery** (`.gallery-grid`, Our Story page): 2 columns on mobile, 3 columns at `min-width: 640px`, 4 columns at `min-width: 1024px`.
+
 ## Things already decided (don't redo)
 
 - Routing structure is now 4 pages (Home, Our Story, Event Details, RSVP) — nav updated accordingly. Don't add more pages unless asked.
-- Styling theme is rustic dark sage green (see Theme section above) — this was a deliberate choice with a specific palette, don't change colors without being asked.
-- Home page hero is now a **full-viewport** section (`.hero-section`, breaks out of `.main` to 100vw/100svh via the `left: 50%; margin-left: -50vw` technique) with the hero photo as a background image, a dark gradient overlay, and the couple names/date/countdown overlaid in white/frosted-glass styling, plus a bouncing scroll-cue arrow at the bottom. This replaced an earlier "photo box above the text" layout after feedback that the site felt "blocky" and lacked full-screen impact. Don't revert to a boxed/inline hero photo.
+- Styling theme is light olive/sage green (see Theme section above) — this was a deliberate choice with a specific palette, don't change colors without being asked.
 - RSVP submission uses client-side `fetch` POST with `FormData` to a Formspree-style endpoint — no backend. If a different submission method is wanted (e.g. email, different service), update `RSVP.jsx` + `rsvpFormAction` together.
 - Don't reintroduce default Vite scaffold files (App.css, react.svg, vite.svg, hero.png, icons.svg) — these were intentionally removed.
 
