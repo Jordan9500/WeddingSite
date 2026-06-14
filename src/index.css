@@ -1,0 +1,524 @@
+:root {
+  --text: #2f2b28;
+  --text-muted: #8a7968;
+  --bg: #f7f4ee;
+  --surface: #ffffff;
+  --border: #e3dcd3;
+  --accent: #3b5339;
+  --accent-light: #e4eae2;
+  --highlight: #c6a052;
+
+  --sans: 'Segoe UI', system-ui, Roboto, sans-serif;
+  --serif: Georgia, 'Times New Roman', serif;
+
+  color-scheme: light;
+  color: var(--text);
+  background: var(--bg);
+  font: 16px/1.5 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(59, 83, 57, 0.07) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+h1 {
+  font-size: 32px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+h3 {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+p {
+  margin: 0 0 8px;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.nav-link:hover {
+  background: var(--accent-light);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Page layout */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: page-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px) scale(0.98);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page,
+  .reveal {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page.home {
+  text-align: center;
+  align-items: center;
+  padding-top: 24px;
+}
+
+/* Home page */
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.couple-names {
+  font-size: 42px;
+  line-height: 1.2;
+  margin: 8px 0;
+}
+
+.amp {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.wedding-date {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.wedding-time {
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.home-note {
+  max-width: 440px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* Hero photo + story blurb */
+.hero-photo-wrap {
+  width: calc(100% + 40px);
+  margin: -24px -20px 4px;
+}
+
+.hero-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 8px 24px rgba(47, 43, 40, 0.12);
+}
+
+.story-blurb {
+  max-width: 480px;
+  margin-top: 8px;
+}
+
+.story-blurb p {
+  color: var(--text-muted);
+}
+
+/* Countdown */
+.countdown {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-width: 64px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.countdown-unit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(47, 43, 40, 0.1);
+}
+
+.countdown-value {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--serif);
+  color: var(--accent);
+}
+
+.countdown-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.countdown-arrived {
+  font-size: 22px;
+  font-family: var(--serif);
+}
+
+/* Gallery (Our Story) */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.gallery-item {
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(47, 43, 40, 0.12);
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-item figcaption {
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Cards (Event Details) */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(47, 43, 40, 0.08);
+}
+
+.venue-name {
+  font-weight: 600;
+}
+
+.venue-address {
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.schedule-list,
+.accommodation-list,
+.travel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.schedule-item {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+}
+
+.schedule-time {
+  flex-shrink: 0;
+  width: 76px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.schedule-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.schedule-description {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.accommodation-list li p,
+.travel-list li {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.hotel-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.hotel-photo {
+  width: 96px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.travel-list {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+/* Buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  align-self: flex-start;
+}
+
+.button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(47, 43, 40, 0.15);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* RSVP form */
+.rsvp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.rsvp-form label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.rsvp-form input,
+.rsvp-form textarea {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.rsvp-form input:focus,
+.rsvp-form textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.attending-field {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 10px;
+}
+
+.attending-field legend {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  margin-top: 6px;
+  cursor: pointer;
+}
+
+.radio-label input {
+  width: auto;
+  accent-color: var(--accent);
+}
+
+.rsvp-form .button {
+  margin-top: 16px;
+  align-self: stretch;
+  background: var(--highlight);
+  color: var(--text);
+}
+
+.rsvp-success {
+  font-size: 18px;
+  text-align: center;
+  background: var(--accent-light);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.rsvp-error {
+  color: #b3261e;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* Larger screens */
+@media (min-width: 640px) {
+  .main {
+    padding: 32px 24px 64px;
+  }
+
+  .couple-names {
+    font-size: 56px;
+  }
+
+  .countdown-unit {
+    min-width: 80px;
+  }
+
+  .hero-photo-wrap {
+    width: calc(100% + 48px);
+    margin: -32px -24px 4px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+}
