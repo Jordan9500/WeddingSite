@@ -72,6 +72,18 @@ Rustic dark sage green palette, defined as CSS variables in `src/index.css` `:ro
 
 PWA theme colors (`vite.config.js` manifest, `index.html` meta theme-color) and the generated placeholder icons match `--accent` (`#3b5339`) / `--bg` (`#f7f4ee`).
 
+### Modern visual refresh
+
+To address "looks blocky/boring" feedback, a CSS-only modernization pass was applied (colors unchanged):
+
+- **Fonts**: Google Fonts `Fraunces` (variable serif, headings) and `Outfit` (sans, body) loaded via `<link>` tags in `index.html`. CSS vars `--serif`/`--sans` updated accordingly.
+- **Design tokens** added to `:root`: `--radius-sm` (12px), `--radius` (20px), `--shadow-sm`, `--shadow-md` — used in place of hard 1px borders for a softer, floating-card look on `.card`, `.gallery-item`, `.countdown-unit`, `.rsvp-form`, `.hotel-photo`.
+- **Navbar**: glassmorphism — translucent white background + `backdrop-filter: blur()`.
+- **Couple names** (`.couple-names`): gradient text effect (`--accent` → `--highlight` via `background-clip: text`).
+- **Buttons**: pill-shaped (`border-radius: 999px`) with subtle gradient backgrounds (`--accent`→darker sage for primary, `--highlight`→lighter gold for the RSVP CTA).
+- **Form inputs**: focus state uses a soft box-shadow ring (`--accent-light`) instead of a hard outline.
+- `body` has `overflow-x: hidden` — required by the full-viewport `.hero-section` breakout (see "Things already decided"), which uses `width: 100vw; margin-left: -50vw` and would otherwise cause horizontal scroll on some browsers.
+
 ## Animations & motion
 
 - `body` has a subtle dotted texture (radial-gradient pattern, sage-tinted) for a rustic/linen feel.
@@ -84,7 +96,7 @@ PWA theme colors (`vite.config.js` manifest, `index.html` meta theme-color) and 
 
 - Routing structure is now 4 pages (Home, Our Story, Event Details, RSVP) — nav updated accordingly. Don't add more pages unless asked.
 - Styling theme is rustic dark sage green (see Theme section above) — this was a deliberate choice with a specific palette, don't change colors without being asked.
-- Home page redesigned with a full-bleed hero photo at the top (above the couple names) — this was a deliberate "make it feel personal/less bland" pass; don't revert to the old text-only layout.
+- Home page hero is now a **full-viewport** section (`.hero-section`, breaks out of `.main` to 100vw/100svh via the `left: 50%; margin-left: -50vw` technique) with the hero photo as a background image, a dark gradient overlay, and the couple names/date/countdown overlaid in white/frosted-glass styling, plus a bouncing scroll-cue arrow at the bottom. This replaced an earlier "photo box above the text" layout after feedback that the site felt "blocky" and lacked full-screen impact. Don't revert to a boxed/inline hero photo.
 - RSVP submission uses client-side `fetch` POST with `FormData` to a Formspree-style endpoint — no backend. If a different submission method is wanted (e.g. email, different service), update `RSVP.jsx` + `rsvpFormAction` together.
 - Don't reintroduce default Vite scaffold files (App.css, react.svg, vite.svg, hero.png, icons.svg) — these were intentionally removed.
 

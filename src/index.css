@@ -8,13 +8,18 @@
   --accent-light: #e4eae2;
   --highlight: #c6a052;
 
-  --sans: 'Segoe UI', system-ui, Roboto, sans-serif;
-  --serif: Georgia, 'Times New Roman', serif;
+  --sans: 'Outfit', 'Segoe UI', system-ui, Roboto, sans-serif;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+  --radius-sm: 12px;
+  --radius: 20px;
+  --shadow-sm: 0 2px 12px rgba(47, 43, 40, 0.06);
+  --shadow-md: 0 12px 28px rgba(47, 43, 40, 0.1);
 
   color-scheme: light;
   color: var(--text);
   background: var(--bg);
-  font: 16px/1.5 var(--sans);
+  font: 16px/1.6 var(--sans);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -24,6 +29,7 @@
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background-color: var(--bg);
   background-image:
     radial-gradient(circle at 1px 1px, rgba(59, 83, 57, 0.07) 1px, transparent 0);
@@ -52,18 +58,19 @@ body {
 
 h1, h2, h3 {
   font-family: var(--serif);
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--text);
   margin: 0 0 12px;
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 34px;
   text-align: center;
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 24px;
 }
 
 h3 {
@@ -85,9 +92,11 @@ a {
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
-  padding: 16px 12px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(227, 220, 211, 0.6);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -96,12 +105,13 @@ a {
 .nav-link {
   text-decoration: none;
   color: var(--text-muted);
-  font-size: 14px;
-  letter-spacing: 0.04em;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 8px 14px;
+  padding: 9px 16px;
   border-radius: 999px;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .nav-link:hover {
@@ -113,6 +123,7 @@ a {
 .nav-link.active {
   background: var(--accent);
   color: #fff;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Page layout */
@@ -154,12 +165,10 @@ a {
     opacity: 1;
     transform: none;
   }
-}
 
-.page.home {
-  text-align: center;
-  align-items: center;
-  padding-top: 24px;
+  .hero-scroll-cue span {
+    animation: none;
+  }
 }
 
 /* Home page */
@@ -171,14 +180,19 @@ a {
 }
 
 .couple-names {
-  font-size: 42px;
-  line-height: 1.2;
+  font-size: 44px;
+  line-height: 1.15;
+  font-weight: 500;
   margin: 8px 0;
+  background: linear-gradient(135deg, var(--accent) 35%, var(--highlight) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .amp {
-  color: var(--accent);
   font-style: italic;
+  opacity: 0.7;
 }
 
 .wedding-date {
@@ -191,24 +205,129 @@ a {
   margin-bottom: 8px;
 }
 
+.home-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding-top: 16px;
+}
+
 .home-note {
   max-width: 440px;
   color: var(--text-muted);
-  margin-top: 8px;
 }
 
-/* Hero photo + story blurb */
-.hero-photo-wrap {
-  width: calc(100% + 40px);
-  margin: -24px -20px 4px;
+/* Full-viewport hero */
+.hero-section {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: -24px;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0 0 28px 28px;
 }
 
-.hero-photo {
+.hero-bg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
   object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(47, 43, 40, 0.45) 0%, rgba(47, 43, 40, 0.28) 45%, rgba(47, 43, 40, 0.62) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 480px;
+  padding: 0 24px;
+}
+
+.hero-content .eyebrow {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero-content .couple-names {
+  background: linear-gradient(135deg, #ffffff 35%, var(--highlight) 130%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-content .wedding-date {
+  color: #fff;
+}
+
+.hero-content .wedding-time {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.hero-content .countdown-unit {
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: none;
+}
+
+.hero-content .countdown-unit:hover {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: none;
+}
+
+.hero-content .countdown-value {
+  color: #fff;
+}
+
+.hero-content .countdown-label {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.hero-scroll-cue span {
   display: block;
-  box-shadow: 0 8px 24px rgba(47, 43, 40, 0.12);
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid rgba(255, 255, 255, 0.85);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.85);
+  transform: rotate(45deg);
+  animation: scroll-cue-bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-cue-bounce {
+  0%, 100% {
+    transform: rotate(45deg) translate(0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(45deg) translate(6px, 6px);
+    opacity: 1;
+  }
 }
 
 .story-blurb {
@@ -232,17 +351,17 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 14px;
+  background: linear-gradient(160deg, var(--surface) 60%, var(--accent-light) 130%);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
   min-width: 64px;
+  box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .countdown-unit:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(47, 43, 40, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .countdown-value {
@@ -274,16 +393,16 @@ a {
 
 .gallery-item {
   margin: 0;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--surface);
-  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .gallery-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(47, 43, 40, 0.12);
+  box-shadow: var(--shadow-md);
 }
 
 .gallery-item img {
@@ -308,15 +427,15 @@ a {
 /* Cards (Event Details) */
 .card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(47, 43, 40, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .venue-name {
@@ -378,8 +497,9 @@ a {
   width: 96px;
   height: 72px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .travel-list {
@@ -392,23 +512,25 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), #4d6c49);
   color: #fff;
   text-decoration: none;
   border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
+  border-radius: 999px;
+  padding: 13px 28px;
   font-size: 15px;
   font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
   transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
   align-self: flex-start;
 }
 
 .button:hover {
-  opacity: 0.9;
+  opacity: 0.95;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(47, 43, 40, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 .button:active {
@@ -426,9 +548,9 @@ a {
   flex-direction: column;
   gap: 6px;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
 }
 
 .rsvp-form label {
@@ -440,22 +562,24 @@ a {
 .rsvp-form input,
 .rsvp-form textarea {
   font: inherit;
-  padding: 10px 12px;
+  padding: 11px 14px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--bg);
   color: var(--text);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .rsvp-form input:focus,
 .rsvp-form textarea:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
 }
 
 .attending-field {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 10px 14px;
   margin-top: 10px;
 }
@@ -483,7 +607,7 @@ a {
 .rsvp-form .button {
   margin-top: 16px;
   align-self: stretch;
-  background: var(--highlight);
+  background: linear-gradient(135deg, var(--highlight), #d9b878);
   color: var(--text);
 }
 
@@ -491,8 +615,8 @@ a {
   font-size: 18px;
   text-align: center;
   background: var(--accent-light);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: var(--radius);
+  padding: 24px;
 }
 
 .rsvp-error {
@@ -515,10 +639,7 @@ a {
     min-width: 80px;
   }
 
-  .hero-photo-wrap {
-    width: calc(100% + 48px);
-    margin: -32px -24px 4px;
-    border-radius: 16px;
-    overflow: hidden;
+  .hero-section {
+    margin-top: -32px;
   }
 }
